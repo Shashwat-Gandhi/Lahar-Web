@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>provide name</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-auth.js"></script>
+   
+</head>
+<body>
+    <h1 align="center">Provide your  name!</h1>
+    <form align="center">
+       <b>Name:</b>
+       <br> 
+       <input id="getname" type="text" name="name">
+       <br>
+       <br>
+        <button onclick="createacc()">Continue</button>
+    </form>
+    <script src='fireBase.js'></script>
+    <script src='getname.js'></script>
+    <script>
+        if(typeof Senduid !== 'undefined'){
+            Senduid.postMessage('This is the message');
+        }
+        else {
+            console.log("%c You are not on a mobile phone",'background : #000000, color : #ffffff');
+        }
+        
+    </script>
+</body>
+</html>

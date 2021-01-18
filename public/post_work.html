@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Post Work</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-firestore.js"></script>
+    
+   
+</head>
+<body>
+    
+    
+    <h1 align="center">Post Work</h1>
+    <form align="center">
+       <b>Select</b>
+       <br> 
+       <select id='work-list' name='work-list'>
+           <option value="other">Other</option>
+       </select>
+       <br> <br><br>
+
+       Details of work
+       <input type="text" id="details" name="details">
+       <br>
+       <br>
+        <button onclick="post()">Post</button>
+    </form>
+    <button onclick="skip()">Skip</button>
+    <script src='fireBase.js'></script>
+    <script src='post_work.js'></script>
+</body>
+</html>
