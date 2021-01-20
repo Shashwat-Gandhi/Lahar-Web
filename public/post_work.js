@@ -20,7 +20,8 @@ function AskMobile() {
     //Method 2 :
     // Send a message to android that will then execute the real function to post the work
     if (typeof SendPostMessage !== 'undefined'){
-        SendPostMessage("ok");
+		console.log(typeof SendPostMessage);
+        SendPostMessage.postMessage("ok");
     }
     else {
         alert('Please open it on mobile phone');
