@@ -28,6 +28,7 @@ function AskMobile() {
     }
 }
 function Post(lat,long){
+    //TODO : use lat as error code and long as error reason from mobile or whatever
     if (lat == 'error') {
         //Could not get the location due to some reason
         alert(long);
@@ -45,6 +46,7 @@ function Post(lat,long){
             position : new firebase.firestore.GeoPoint(lat,long)
         }).then(function() {
             console.log("uploaded post success");
+            window.replace('show_map.html');
         }).catch(function (error) {
             console.error('error uploading post ', error);
         });

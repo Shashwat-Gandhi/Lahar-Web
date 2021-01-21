@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Add sMap</title>
+    <meta charset='utf-8'>
+    <title>Map</title>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+
     <style type="text/css">
         /* Set the size of the div element that contains the map */
         #map {
@@ -11,16 +16,27 @@
           /* The width is the width of the web page */
         }
       </style>
+
+
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDp8oYBLfK5QEVo3IavZ0eg6Xt90wu14Lk&callback=initMap&libraries=&v=weekly"
       defer
     ></script>
-    <link rel="stylesheet" type="text/css" href="./style.css" />
-    <script src="show_map.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-firestore.js"></script>
   </head>
+
+
+
   <body>
-    <h3>My Google Maps Demo</h3>
+    <h3>Searching...</h3>
     <!--The div element for the map -->
     <div id="map"></div>
+
+    <script src='fireBase.js'></script>
+    <script src="show_map.js"></script>
   </body>
+
 </html>
