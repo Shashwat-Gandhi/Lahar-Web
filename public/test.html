@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Test Page</title>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+  </head>
+
+
+
+  <body>
+    <h3>Test Page...</h3>
+    <input id='test'>
+    <script src='fireBase.js'></script>
+    <script>
+        AddWorkersPosition(message){
+            console.log(message + " from javascript");
+            document.getElementById('test').textContent = message + "from javascript";
+        }   
+    </script>
+  </body>
+
+</html>
