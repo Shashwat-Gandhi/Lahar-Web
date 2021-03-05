@@ -1,55 +1,86 @@
 var firebase = app_firebase;
 db = firebase.firestore();
 
+
 (function LoadListOfWorks() {
     const work_list = document.getElementById('work-list');    
-    db.collection('jobs').get().then((snapshot) => {
-        snapshot.docs.forEach(doc => {
+    db.collection('jobs').doc("All Jobs").get().then((doc) => {
+        var jobs = doc.data().jobs;
+        jobs.forEach((job)=> {
             var option = document.createElement("option");
-            var name = doc.get("name");
-            option.value = name;
-            option.innerHTML = name;
+            option.value = job;
+            option.innerHTML = job;
             work_list.options.add(option);
         })
+    }).catch((error) => {
+        console.log("Erorr : " + error);
     })
 
 
 })()
 
-function AskMobile() {
-    //Method 2 :
-    // Send a message to android that will then execute the real function to post the work
-    if (typeof SendPostMessage !== 'undefined'){
-		console.log(typeof SendPostMessage);
-        SendPostMessage.postMessage("ok");
+function Post(){
+    if (typeof flutter_bridge !== 'undefined') {
+        flutter_bridge.postMessage("send_location : upload")
     }
     else {
-        alert('Please open it on mobile phone');
+        alert('please open it on a mobile phone');
     }
+    
 }
-function Post(lat,long){
-    //TODO : use lat as error code and long as error reason from mobile or whatever
-    if (lat == 'error') {
-        //Could not get the location due to some reason
-        alert(long);
-    }
-    else {
-        const select_btn = document.getElementById('work-list'); 
-        var work_str = select_btn.value;
-        var work_details = document.getElementById('details').textContent;
-        
-        db.collection('jobs_unassigned_realtime').doc().set({
-            employer : 'CvPu1BmnbHTkFqp7KjeahgEqfas2',
-            work : work_str,
-            timeCreated : new Date(),
-            details : work_details,
-            position : new firebase.firestore.GeoPoint(lat,long)
-        }).then(function() {
-            console.log("uploaded post success");
-            window.replace('show_map.html');
-        }).catch(function (error) {
-            console.error('error uploading post ', error);
+function upload(lt,lg) {
+    const select_btn = document.getElementById('work-list'); 
+    var work_str = select_btn.value;
+    var work_details = document.getElementById('details').value;
+    var stn = document.getElementById('street_name').value;
+    var nbd = document.getElementById('neighborhood').value;
+    db.collection('jobs_unassigned_realtime').add({
+        employer : 'CvPu1BmnbHTkFqp7KjeahgEqfas2',
+        work : work_str,
+        timeCreated : new Date(),
+        details : work_details,
+        location : new firebase.firestore.GeoPoint(lt,lg),
+        streetName : stn,
+        neighborhood : nbd,
+        cancelled : false,
+        employee_on_hook : null,
+        employees_rejected : null   
+    }).then(function(docRef) {
+        console.log("uploaded post success docID : " + docRef.id);
+        const gW = firebase.functions().httpsCallable('giveNotification');
+        gW({lat : lt , long : lg, docID : docRef.id, work : work_str,
+            details : work_details, streetName : stn, neighborhood : nbd})
+        .then(result=> {
+            if (result.data != null) {
+                console.log("result data : " + result.data);
+            }
+            else {
+                console.log("it prolly failed.");
+            }
+        }).catch(function(error) {
+            console.log("could not call function");
         });
+    }).catch(function (error) {
+        console.error('error uploading post ', error);
+    });
+}
+function init() {
+    flutter_bridge.postMessage("send_location : initMap");
+}
+var uluru;
+var map;
+var marker;
 
-    }
+function initMap(lt, lg) {
+    uluru = {lat : lt, lng : lg};
+    map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 15,
+    center: uluru,
+  });
+  // The marker, positioned at Uluru
+    marker = new google.maps.Marker({
+    position: uluru,
+    map: map,
+    animation : google.maps.Animation.BOUNCE,
+  });
 }

@@ -7,8 +7,21 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-firestore.js"></script>
-    
-   
+    <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-functions.js"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDp8oYBLfK5QEVo3IavZ0eg6Xt90wu14Lk&libraries=&v=weekly"
+      defer
+    ></script>
+    <style type="text/css">
+        /* Set the size of the div element that contains the map */
+        #map {
+          height: 400px;
+          /* The height is 400 pixels */
+          width: 100%;
+          /* The width is the width of the web page */
+        }
+      </style>
+
 </head>
 <body>
     
@@ -26,8 +39,17 @@
        <input type="text" id="details" name="details">
        <br>
        <br>
-        <button onclick="AskMobile()">Post</button>
+       Your Address <br>
+       Street Name : <input type="text" id="street_name"> <br>
+       Neighborhood : <input type="text" id="neighborhood">
+       <br><br>
+        <button onclick="Post()">Post</button>
     </form>
+    <br>
+    If the below location is very wrong, please refresh the page or go to settings and change location mode to high accuracy.
+    <br><br>
+    <div id="map"></div>
+    <br>
     <button onclick="skip()">Skip</button>
     <script src='fireBase.js'></script>
     <script src='post_work.js'></script>

@@ -15,11 +15,11 @@
               var errorMessage = error.message;
               console.log(errorMessage + ' : ' + errorCode);
             });
-            if(!(typeof Senduid !== 'undefined')) {
+            if(!(typeof flutter_bridge !== 'undefined')) {
                 alert('Open it on a mobile phone!');
             }
             else {
-                Senduid('' + uid);
+                flutter_bridge.postMessage('uid:' + uid);
             }
             console.log(uid)
             var docRef = db.collection("registered").doc(uid);
@@ -33,7 +33,7 @@
                     }
                     else {
                         console.log('data exists');
-                        window.location.replace("dab_er.html");      //go to dashboard;
+                        window.location.replace("dab_ee.html");      //go to dashboard;
                     }
                 } else {
                     console.log('data does not exist');

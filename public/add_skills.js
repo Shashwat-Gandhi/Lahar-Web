@@ -6,14 +6,23 @@ var cb,label;
     var firebase = app_firebase;
     var db = firebase.firestore();
 
-    db.collection("jobs").get().then((snapshot) => {
-        snapshot.docs.forEach(doc => {
-            var name = doc.get("name");
-            options_array.push(name + '|' + name);
-        }) 
+    db.collection("jobs").doc("All Jobs").get().then((doc) => {
+        if(doc.exists) {
+            var dat = doc.data();
+            var jobs = dat.jobs;
+            jobs.forEach(job => {
+                options_array.push(job + '|' + job);
+            })
+        }
+        else {
+            console.log("not found the doc");
+        }
+        
         options_array.push('other|Other');
         CreateForm();
-    })
+    }).catch((error) => {
+        console.log("Error, retrieving doc : " + error);
+    }) 
     
 })()
 function CreateForm() {
@@ -43,9 +52,7 @@ function CreateForm() {
     button.id = 'submit_button';
     button.setAttribute('onclick','UploadSkills()');
     form.appendChild(button);
-    console.log(button);
     document.getElementsByTagName("body")[0].appendChild(form); 
-    console.log(form);
 } 
 function others_checkbox_clicked(bid,cid) {
     console.log('others clicked');

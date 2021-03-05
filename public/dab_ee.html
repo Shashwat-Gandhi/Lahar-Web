@@ -8,7 +8,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-auth.js"></script>
-    
+    <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-functions.js"></script>
    
 </head>
 <body>
@@ -53,7 +53,17 @@
     </table>
     <br>
     <br>
-
+    <button tpye="button" onclick="OpenCamera()" > Open Camera </button>
+    <script >
+        function OpenCamera() {
+            if(typeof flutter_bridge !== "undefined") {
+                flutter_bridge.postMessage("open_camera : open_camera");
+            }
+            else {
+                console.log("open in mobile");
+            }
+        }
+    </script>
     <button type='button' onclick="UpdateSkils()"> Update Skills </button>
     <button type='button'> See All Works</button>
     <script src='fireBase.js'></script>
