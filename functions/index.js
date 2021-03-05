@@ -130,5 +130,51 @@ exports.job = functions.firestore.
 
 //  location wise query jobs aur fir dab me bhej dega
 exports.getJobs = functions.https.onCall((data, context) => {
-  console.log(context.auth.id);
+  const result = {jobs: {}};
+  return getJobsNearby(data.lat, data.long, 10).then((querySnapshot) => {
+    console.log("yeah");
+    let i = 0;
+    querySnapshot.forEach(function(doc) {
+      const queryData = doc.data();
+      console.log(doc.id, " =>", queryData.name);
+      console.log(queryData);
+      result.jobs[i] = {work: queryData.work, details: queryData.details};
+      i++;
+    });
+    console.log(result);
+    return result;
+  }).catch((error) => {
+    console.log("error : " + error);
+    return error;
+  });
 });
+
+/**
+ * Adds two numbers together.
+ * @param {number} latitude the latitude.
+ * @param {number} longitude The longitude.
+ * @param {number} distance the distance around it.
+ * @return {Promise<any>} the users in the area.
+ */
+function getJobsNearby(latitude, longitude, distance) {
+  // ~1 mile of lat and lon in degrees
+  const lat = 0.0144927536231884;
+  const lon = 0.0181818181818182;
+
+  const lowerLat = latitude - (lat * distance);
+  const lowerLon = longitude - (lon * distance);
+
+  const greaterLat = latitude + (lat * distance);
+  const greaterLon = longitude + (lon * distance);
+
+  const lesserGeopoint = new admin.firestore.GeoPoint(lowerLat, lowerLon);
+  const greaterGeopoint = new admin.firestore.GeoPoint(greaterLat, greaterLon);
+
+  const docRef = admin.firestore().collection("jobs_unassigned_realtime");
+  const query = docRef.where("location", ">=", lesserGeopoint)
+      .where("location", "<=", greaterGeopoint);
+
+  //  let users = "";
+  console.log("will do query get");
+  return query.get();
+}

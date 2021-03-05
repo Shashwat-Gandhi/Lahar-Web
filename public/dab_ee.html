@@ -13,57 +13,9 @@
 </head>
 <body>
     <table id='table'>
-        <tr>
-            <th>Work</th>
-            <th></th>
-        </tr>
-        <tr>
-           <td>
-                Dish Washing
-                Sector 2
-                Malviya Nagar 
-           </td> 
-           <td>
-               Price 300 Rs <br>
-               <button type='button'> Say Yes </button>
-           </td>
-        </tr>
-        <tr>
-            <td>
-                Dish Washing
-                Sector 2
-                Malviya Nagar 
-           </td> 
-           <td>
-               Price 300 Rs <br>
-               <button type='button'> Say Yes </button>
-           </td>
-        </tr>
-        <tr>
-           <td>
-                Ironing
-                Sector 2
-                Malviya Nagar 
-            </td> 
-            <td>
-                Price 300 Rs <br>
-                <button type='button'> Say Yes </button>
-            </td>
-        </tr>
     </table>
     <br>
     <br>
-    <button tpye="button" onclick="OpenCamera()" > Open Camera </button>
-    <script >
-        function OpenCamera() {
-            if(typeof flutter_bridge !== "undefined") {
-                flutter_bridge.postMessage("open_camera : open_camera");
-            }
-            else {
-                console.log("open in mobile");
-            }
-        }
-    </script>
     <button type='button' onclick="UpdateSkils()"> Update Skills </button>
     <button type='button'> See All Works</button>
     <script src='fireBase.js'></script>
