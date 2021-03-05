@@ -138,7 +138,11 @@ exports.getJobs = functions.https.onCall((data, context) => {
       const queryData = doc.data();
       console.log(doc.id, " =>", queryData.name);
       console.log(queryData);
-      result.jobs[i] = {work: queryData.work, details: queryData.details};
+      result.jobs[i] = {work: queryData.work,
+        details: queryData.details,
+        id: doc.id,
+        nbd: queryData.neighborhood,
+        stn: queryData.streetName};
       i++;
     });
     console.log(result);
@@ -171,7 +175,9 @@ function getJobsNearby(latitude, longitude, distance) {
   const greaterGeopoint = new admin.firestore.GeoPoint(greaterLat, greaterLon);
 
   const docRef = admin.firestore().collection("jobs_unassigned_realtime");
-  const query = docRef.where("location", ">=", lesserGeopoint)
+  const query = docRef.where("cancelled", "==", false)
+      .where("assigned", "==", false)
+      .where("location", ">=", lesserGeopoint)
       .where("location", "<=", greaterGeopoint);
 
   //  let users = "";

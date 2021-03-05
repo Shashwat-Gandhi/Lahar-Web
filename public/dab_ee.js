@@ -40,11 +40,14 @@ function LoadJobs(lt, lg) {
                         var tr = document.createElement('tr');
                         var td = document.createElement('td');
                         var td2 = document.createElement("td");
-                        td2.append(btn);
+                        td2.innerHTML = jobs[i].nbd + "<br>" + jobs[i].stn;
+                        var td3 = document.createElement("td");
+                        td3.append(btn);
                         td.innerHTML =jobs[i]["work"] + "<br>" + jobs[i]["details"];
                         table.append(tr);
                         tr.append(td);
                         tr.append(td2);
+                        tr.append(td3);
                      }
                  }
              }
