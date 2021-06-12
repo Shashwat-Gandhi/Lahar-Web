@@ -5,76 +5,28 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 
 //  http callable function
-exports.giveNotification = functions.https.onCall((data, context) => {
-  getDocumentNearBy(data.lat, data.long, 10).then((querySnapshot) => {
-    querySnapshot.forEach(function(doc) {
-      const queryData = doc.data();
-      console.log(doc.id, " =>", queryData.name);
-      if (typeof queryData.fcm_token !== "undefined") {
-        const payload = {
-          notification: {
-            title: data.work,
-            body: data.details,
-            clickAction: "FLUTTER_NOTIFICATION_CLICK",
-          },
-          data: {
-            "Work": data.work,
-            "Details": data.details,
-            "docID": data.docID,
-            "StreetName": data.streetName,
-            "Neighborhood": data.neighborhood,
-          },
-        };
-        const messagingOptions = {
-          priority: "high",
-        };
-        //  be sure to change the below line before production
-        return admin.messaging().
-            sendToTopic("lahar", payload, messagingOptions);
-      }
-    });
-  }).catch((error) => {
-    console.error("Error getting documents: ", error);
-  });
-});
-
-//  http callable function
 exports.giveWorkers = functions.https.onCall((data, context) => {
-  console.log("geopoint in constant");
-  getDocumentNearBy(data.lat, data.long, 10).then((querySnapshot) => {
-    console.log("these are the users :");
-    let users;
-    querySnapshot.forEach(function(doc) {
-      const queryData = doc.data();
-      console.log(doc.id, " =>", queryData.name);
-      users += data.name + ":" + data.uid + ",";
-      console.log(queryData);
-      if (typeof queryData.fcm_token !== "undefined") {
-        const payload = {
-          notification: {
-            title: "Portugal vs. Denmark",
-            body: "great match!",
-            clickAction: "FLUTTER_NOTIFICATION_CLICK",
-          },
-          data: {
-            "Nick": "Mario",
-            "Room": "PortugalVSDenmark",
-            "docID": doc.id,
-          },
-        };
-        const messagingOptions = {
-          priority: "high",
-        };
-        //  be sure to change the below line before production
-        admin.messaging().sendToTopic("lahar", payload, messagingOptions)
-            .then(() => {
-              return users;
-            });
-      }
+  if (context.auth != null) {
+    console.log("geopoint in constant");
+    return getDocumentNearBy(data.lat, data.long, 10).then((querySnapshot) => {
+      console.log("these are the users :");
+      const users = {};
+      let i = 0;
+      querySnapshot.forEach(function(doc) {
+        const queryData = doc.data();
+        console.log(doc.id, " =>", queryData.name);
+        console.log(queryData);
+        users[i]= {name: queryData.name,
+          uid: doc.id};
+        i += 1;
+      });
+      return users;
+    }).catch((error) => {
+      console.error("Error getting nearby users: ", error);
     });
-  }).catch((error) => {
-    console.error("Error getting documents: ", error);
-  });
+  } else {
+    return "Error : NOT_AUTH";
+  }
 });
 
 /**
@@ -130,6 +82,12 @@ exports.job = functions.firestore.
 
 //  location wise query jobs aur fir dab me bhej dega
 exports.getJobs = functions.https.onCall((data, context) => {
+  if (context.auth != null) {
+    console.log(context.auth.uid + " : context auth id");
+    console.log("context auth is : " + context.auth);
+  } else {
+    console.log("lol auth is empty");
+  }
   const result = {jobs: {}};
   return getJobsNearby(data.lat, data.long, 10).then((querySnapshot) => {
     console.log("yeah");
@@ -184,3 +142,49 @@ function getJobsNearby(latitude, longitude, distance) {
   console.log("will do query get");
   return query.get();
 }
+exports.giveNotification = functions.firestore
+    .document("jobs_unassigned_realtime/{job}")
+    .onCreate((snap, context) => {
+      const data = snap.data();
+
+      // eslint-disable-next-line max-len
+      return getDocumentNearBy(data.location.latitude, data.location.longitude, 10)
+          .then((querySnapshot) => {
+            querySnapshot.forEach(function(doc) {
+              const queryData = doc.data();
+              console.log(doc.id, " =>", queryData.name);
+              if (typeof queryData.fcm_token !== "undefined") {
+                const payload = {
+                  notification: {
+                    title: data.work,
+                    body: data.details,
+                    clickAction: "FLUTTER_NOTIFICATION_CLICK",
+                  },
+                  data: {
+                    "Work": data.work,
+                    "Details": data.details,
+                    "docID": data.docID,
+                    "StreetName": data.streetName,
+                    "Neighborhood": data.neighborhood,
+                  },
+                };
+                const messagingOptions = {
+                  priority: "high",
+                };
+                //  be sure to change the below line before production
+                return admin.messaging().
+                    sendToTopic("lahar", payload, messagingOptions)
+                    .then((result) => {
+                      console.log("notification sent : " + result);
+                      return "notification sent";
+                    }).catch((error) => {
+                      console.log("error sending notificaiton : " + error);
+                      return error;
+                    });
+              }
+            });
+          }).catch((error) => {
+            console.error("Error getting documents: ", error);
+            return error;
+          });
+    });

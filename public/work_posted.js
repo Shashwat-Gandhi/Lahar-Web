@@ -12,27 +12,24 @@ db = firebase.firestore();
 var s;
 function getWorkers(lt,lg) {
     const gW = firebase.functions().httpsCallable('giveWorkers')
-    gW({lat : lt , long : lg}).then(result=> {
+    gW({lat : lt , long : lg}).then(users => {
+        s = users.data;
         var list = document.getElementById('worker-list');
-        if (result.data != null) {
-            if(result.data == "") {
-                console.log("no one around you")
+        if (users.data != null) {
+            if(users.data == "Error : NOT_AUTH"){
+                alert("You are not authorised, please sign in again!");
             }
             else {
-                console.log(result.data);
-                s = result;
-                var workers = result.data.split(",");
-                for( var i of workers) {
-                    if (i != "" && i != null && i != " "){    
-                        i.trim();
-                        var worker = i.split(":");
+                console.log(users.data);
+                for( var i in users.data) {
+                    if (i != "" && i != null && i != " "){   
                         console.log(i);
                         var li = document.createElement("li");
                         var btn = document.createElement("button");
                         btn.textContent = "call"
                         var btn2 = document.createElement("button");
                         btn2.textContent = "message"
-                        li.textContent = worker[0];
+                        li.innerHTML = users.data[i].name;
                         li.append(btn);
                         li.append(btn2);
                         list.append(li);

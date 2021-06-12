@@ -10,8 +10,10 @@ var db = firebase.firestore();
        flutter_bridge.postMessage("send_location : LoadJobs");
    }
 })()
-function ClickedYes(bid) {
-    window.location.replace('las.html');
+function sayYes(id) {
+    // store the id in phone and go to confirm-work.html
+    //confirm the work
+    //go to diff page.
 }
 function UpdateSkils() {
     window.location.replace('add_skills.html');
@@ -35,6 +37,7 @@ function LoadJobs(lt, lg) {
                      if (i != "" && i != null && i != " "){   
                         console.log(i);
                         var btn = document.createElement("button");
+                        btn.setAttribute("onclick","sayYes('" + jobs[i].id + "')");
                         btn.textContent = "Say Yes";
                                             
                         var tr = document.createElement('tr');

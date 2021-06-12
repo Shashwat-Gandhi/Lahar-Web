@@ -44,22 +44,9 @@ function upload(lt,lg) {
         neighborhood : nbd,
         cancelled : false,
         employee_on_hook : null,
-        employees_rejected : null   
+        employees_rejected : []  
     }).then(function(docRef) {
         console.log("uploaded post success docID : " + docRef.id);
-        const gW = firebase.functions().httpsCallable('giveNotification');
-        gW({lat : lt , long : lg, docID : docRef.id, work : work_str,
-            details : work_details, streetName : stn, neighborhood : nbd})
-        .then(result=> {
-            if (result.data != null) {
-                console.log("result data : " + result.data);
-            }
-            else {
-                console.log("it prolly failed.");
-            }
-        }).catch(function(error) {
-            console.log("could not call function");
-        });
     }).catch(function (error) {
         console.error('error uploading post ', error);
     });
