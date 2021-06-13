@@ -29,7 +29,8 @@
                     if(snapshot.get("name") == null){
                         console.log("data not exists");
                      //   window.location.replace("app://camera.request") ;        //this line goes to camera activity
-                        window.location.replace('add_skills.html');
+                        //window.location.replace('add_skills.html');
+                        window.location.replace("get_info.html");
                     }
                     else {
                         console.log('data exists');
@@ -43,7 +44,8 @@
                         emailaddress: null
                     });
                    // window.location.replace("app://camera.request")     //this line goes to camera activity
-                    window.location.replace('add_skills.html');
+                    //window.location.replace('add_skills.html');
+                    window.location.replace("get_info.html");
                 }
             });
         } else {

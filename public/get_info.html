@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Get Info</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-auth.js"></script>
+    
+   
+</head>
+<body>
+    <h1>Fill Your Information</h1> <br><br>
+    <form action='' >
+        <h3>Name : </h3> <input type='text' id='name' required> <br>
+        <h3>Email : </h3> <input type='text' id='email' required> <br>
+        <h3>City : </h3> <input type='text' id='city' required> <br><br>
+
+        <center><button type='button' onclick="SubmitInfo()">Submit</button></center>
+    </form>
+
+    <script src='fireBase.js'></script>
+    <script src='get_info.js'></script>
+</body>
+</html>
